@@ -13,9 +13,6 @@ Parameters:
   MLOpsRoleArn:
     Type: String
     Description: The role for executing the deployment
-  VariantName:
-    Type: String
-    Description: Name of the endpoint variant
   ScheduleMetricName:
     Type: String
     Description: The metric to alarm on for schedule
@@ -63,7 +60,7 @@ Resources:
           InitialVariantWeight: 1.0
           InstanceType: ml.m5.large
           ModelName: !GetAtt Model.ModelName
-          VariantName: !Ref VariantName
+          VariantName: !Sub prd-${ModelName}
       DataCaptureConfig:
         CaptureContentTypeHeader:
           CsvContentTypes:
@@ -272,7 +269,7 @@ Resources:
         - Name: Endpoint
           Value: !GetAtt Endpoint.EndpointName
         - Name: MonitoringSchedule
-          Value: !GetAtt SagemakerMonitoringSchedule.ScheduleName
+          Value: !Sub mlops-${ModelName}-pms-${TrainJobId}
       EvaluationPeriods: 2
       MetricName: !Ref ScheduleMetricName
       Namespace: aws/sagemaker/Endpoints/data-metrics
@@ -323,7 +320,7 @@ Resources:
     Properties:
       MaxCapacity: 10
       MinCapacity: 2
-      ResourceId: !Sub endpoint/mlops-${ModelName}-prd-${TrainJobId}/variant/${VariantName}
+      ResourceId: !Sub endpoint/mlops-${ModelName}-prd-${TrainJobId}/variant/prd-${ModelName}
       RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/MLOps
       ScalableDimension: sagemaker:variant:DesiredInstanceCount
       ServiceNamespace: sagemaker
@@ -334,7 +331,7 @@ Resources:
     Properties:
       PolicyName: SageMakerVariantInvocationsPerInstance
       PolicyType: TargetTrackingScaling
-      ResourceId: !Sub endpoint/mlops-${ModelName}-prd-${TrainJobId}/variant/${VariantName}
+      ResourceId: !Sub endpoint/mlops-${ModelName}-prd-${TrainJobId}/variant/prd-${ModelName}
       ScalableDimension: sagemaker:variant:DesiredInstanceCount
       ServiceNamespace: sagemaker
       TargetTrackingScalingPolicyConfiguration:

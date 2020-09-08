@@ -101,7 +101,6 @@ def get_dev_params(model_name, job_id, role, image_uri, kms_key_id):
             "ModelName": model_name,
             "TrainJobId": job_id,
             "MLOpsRoleArn": role,
-            "VariantName": "dev-{}".format(model_name),
             "KmsKeyId": kms_key_id,
         }
     }
@@ -112,7 +111,6 @@ def get_prd_params(model_name, job_id, role, image_uri, kms_key_id):
         "Parameters"
     ]
     prod_params = {
-        "VariantName": "prd-{}".format(model_name),
         "ScheduleMetricName": "feature_baseline_drift_total_amount",
         "ScheduleMetricThreshold": str("0.20"),
     }

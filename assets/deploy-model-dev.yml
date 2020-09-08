@@ -12,9 +12,6 @@ Parameters:
   MLOpsRoleArn:
     Type: String
     Description: The role for executing the deployment
-  VariantName:
-    Type: String
-    Description: Name of the endpoint variant
   KmsKeyId:
     Description: AWS KMS key ID used to encrypt data at rest on the ML storage volume attached to endpoint config.
     Type: String
@@ -37,7 +34,7 @@ Resources:
           InitialVariantWeight: 1.0
           InstanceType: ml.t2.medium
           ModelName: !GetAtt Model.ModelName
-          VariantName: !Ref VariantName
+          VariantName: !Sub dev-${ModelName}
       EndpointConfigName: !Sub mlops-${ModelName}-dec-${TrainJobId}
       KmsKeyId: !Ref KmsKeyId
       Tags:
