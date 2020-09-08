@@ -11,16 +11,6 @@ Resources:
       Role: !GetAtt SagemakerCustomResourceRole.Arn
       Description: "Creates a SageMaker Monitoring Baseline for a given input"
 
-  MonitoringScheduleFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: sagemaker-cfn-monitoring-schedule
-      CodeUri: .
-      Handler: sagemaker_monitoring_schedule.lambda_handler
-      Runtime: python3.7
-      Role: !GetAtt SagemakerCustomResourceRole.Arn
-      Description: "Creates a SageMaker Monitoring Schedule for a given Endpoint"
-
   TrainingJobFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -73,12 +63,12 @@ Resources:
                 Effect: Allow
                 Action:
                   - lambda:* # Requires at least lambda:AddPermission
-                Resource: "*" # TODO: Narrow this down
+                Resource: "*"
               - Sid: AllowEvents
                 Effect: Allow
                 Action:
                   - events:* # Requires at least events:PutRule/events:RemoveTargets
-                Resource: "*" # TODO: Narrow this down
+                Resource: "*"
               - Sid: AllowPassRole
                 Effect: Allow
                 Action:
