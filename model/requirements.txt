@@ -1,4 +1,5 @@
-awscli>=1.18.140
-boto3>=1.14.35
+awscli>=1.19.12
+boto3>=1.17.12
 sagemaker>=2.0.0
 pandas>=1.2.2
+stepfunctions>=1.1.2
